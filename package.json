@@ -1,0 +1,41 @@
+{
+  "name": "umistudy-online",
+  "version": "1.0.0",
+  "description": "尤米学官网",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "packager": "electron-packager . electron-quick-start --overwrite --win=x32 --out ./HelloWorldApp --arch=x64 --app-version=1.0.0 --electron-version=2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/zhangzhipiao/umistudy-online.git"
+  },
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "Jim",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.2.1",
+    "@electron-forge/maker-deb": "^6.2.1",
+    "@electron-forge/maker-rpm": "^6.2.1",
+    "@electron-forge/maker-squirrel": "^6.2.1",
+    "@electron-forge/maker-zip": "^6.2.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
+    "@electron-forge/publisher-github": "^6.2.1",
+    "electron": "25.3.0",
+    "electron-packager": "^17.1.1"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  }
+}
