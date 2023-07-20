@@ -1,41 +1,54 @@
 {
-  "name": "umistudy-online",
-  "version": "1.0.0",
-  "description": "尤米学官网",
-  "main": "main.js",
+  "name": "my-electron-vue",
+  "description": "my electron+vue project",
+  "author": "author",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "electron-forge start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "packager": "electron-packager . electron-quick-start --overwrite --win=x32 --out ./HelloWorldApp --arch=x64 --app-version=1.0.0 --electron-version=2.0.0"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/zhangzhipiao/umistudy-online.git"
-  },
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "Jim",
-  "license": "ISC",
-  "devDependencies": {
-    "@electron-forge/cli": "^6.2.1",
-    "@electron-forge/maker-deb": "^6.2.1",
-    "@electron-forge/maker-rpm": "^6.2.1",
-    "@electron-forge/maker-squirrel": "^6.2.1",
-    "@electron-forge/maker-zip": "^6.2.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
-    "@electron-forge/publisher-github": "^6.2.1",
-    "electron": "25.3.0",
-    "electron-packager": "^17.1.1"
-  },
+  "main": "background.js",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
-  }
+    "core-js": "^3.8.3",
+    "element-plus": "^2.3.8",
+    "vue": "^3.2.13"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "electron": "^13.6.9",
+    "electron-devtools-installer": "^3.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "vue-cli-plugin-electron-builder": "^2.1.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
 }
