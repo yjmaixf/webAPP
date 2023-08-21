@@ -1,4 +1,4 @@
-# my-electron-vue
+# 中控台
 
 ## Project setup
 ```
