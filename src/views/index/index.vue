@@ -1,251 +1,296 @@
 <template>
   <div class="container">
-    <div>
-      <el-table
-        :data="tableData"
-        border
-        :summary-method="getSummaries"
-        show-summary
-        class="left"
-      >
-        <el-table-column type="selection" width="45" />
-        <!-- <el-table-column label="Date" width="120">
-        <template #default="scope">{{ scope.row.date }}</template>
-      </el-table-column> -->
-        <el-table-column prop="ip" label="IP" width="100" />
-        <el-table-column prop="id" label="ID" :width="maxWidth ? '' : 30" />
-        <el-table-column
-          prop="schedule"
-          label="进度"
-          :width="maxWidth ? '' : 60"
-        />
-        <el-table-column
-          prop="success"
-          label="成功"
-          :width="maxWidth ? '' : 80"
-        />
-        <el-table-column prop="fail" label="失败" :width="maxWidth ? '' : 80" />
-        <el-table-column
-          prop="number"
-          label="次数"
-          :width="isWidth ? '' : 80"
-        />
-        <el-table-column
-          prop="money"
-          label="金币"
-          :width="maxWidth ? '' : 80"
-        />
-        <el-table-column
-          prop="income"
-          label="收益"
-          :width="maxWidth ? '' : 60"
-        />
-        <el-table-column
-          prop="cumulativeGain"
-          label="累计收益"
-          :width="maxWidth ? '' : 80"
-        />
-        <el-table-column
-          prop="peopleNum"
-          label="人数"
-          :width="maxWidth ? '' : 60"
-        />
-        <el-table-column prop="num" label="数量" :width="maxWidth ? '' : 60" />
-        <el-table-column prop="box" label="宝藏" :width="maxWidth ? '' : 60" />
-        <el-table-column
-          prop="status"
-          label="状态"
-          :width="maxWidth ? '' : 60"
-        />
-        <el-table-column
-          prop="task"
-          label="当前任务"
-          :width="maxWidth ? '' : 80"
-        />
-        <el-table-column prop="isMessage" label="当前信息" width="110" />
-        <el-table-column prop="runTime" label="运行时长" width="110" />
-        <el-table-column
-          prop="resetting"
-          label="重置"
-          :width="maxWidth ? '' : 60"
-        />
-      </el-table>
+    <div class="background_pictur">
+      <img src="../../../public/icons/background.jpg" />
     </div>
-    <div class="right">
-      <div class="list">
-        <span>多开数量：</span>
-        <el-input-number
-          v-model="configuration.configuration_input"
-          :min="1"
-          :max="10"
-        />
+    <div class="flex_container">
+      <div style="width: 100%">
+        <el-table
+          :data="tableData"
+          border
+          :summary-method="getSummaries"
+          show-summary
+          class="left"
+        >
+          <el-table-column type="selection" width="58" />
+          <el-table-column prop="ip" label="IP" :width="maxWidth ? 110 : 110" />
+          <el-table-column prop="id" label="ID" :width="maxWidth ? '' : 30" />
+          <el-table-column
+            prop="schedule"
+            label="进度"
+            :width="maxWidth ? '' : 60"
+          />
+          <el-table-column
+            prop="success"
+            label="成功"
+            :width="maxWidth ? '' : 80"
+          />
+          <el-table-column
+            prop="fail"
+            label="失败"
+            :width="maxWidth ? '' : 80"
+          />
+          <el-table-column
+            prop="number"
+            label="次数"
+            :width="isWidth ? 100 : 80"
+          />
+          <el-table-column
+            prop="money"
+            label="金币"
+            :width="maxWidth ? '' : 80"
+          />
+          <el-table-column
+            prop="income"
+            label="收益"
+            :width="maxWidth ? '' : 60"
+          />
+          <el-table-column
+            prop="cumulativeGain"
+            label="累计收益"
+            :width="maxWidth ? '' : 80"
+          />
+          <el-table-column
+            prop="peopleNum"
+            label="人数"
+            :width="maxWidth ? '' : 60"
+          />
+          <el-table-column
+            prop="num"
+            label="数量"
+            :width="maxWidth ? '' : 60"
+          />
+          <el-table-column
+            prop="box"
+            label="宝藏"
+            :width="maxWidth ? '' : 60"
+          />
+          <el-table-column
+            prop="status"
+            label="状态"
+            :width="maxWidth ? '' : 60"
+          />
+          <el-table-column
+            prop="task"
+            label="当前任务"
+            :width="maxWidth ? '' : 80"
+          />
+          <el-table-column prop="isMessage" label="当前信息" width="110" />
+          <el-table-column prop="runTime" label="运行时长" width="110" />
+          <el-table-column
+            prop="resetting"
+            label="重置"
+            :width="maxWidth ? '' : 60"
+          />
+        </el-table>
       </div>
-      <div class="list">
-        <span>启动延时：</span>
-        <el-input
-          v-model="configuration.schedule_input"
-          style="width: 150px"
-          placeholder=""
-        />
-        <span>&nbsp;秒</span>
-      </div>
-      <div class="list">
-        <el-checkbox
-          v-model="configuration.automatically_run_scripts"
-          label="自动运行脚本"
-          size="large"
-        />
-      </div>
-      <div class="list">
-        <el-checkbox
-          v-model="configuration.at_regular_time"
-          label="定时重置"
-          size="large"
-        />
-        <div class="list_item_flex">
+      <div class="right">
+        <div class="list">
+          <span>多开数量：</span>
+          <el-input-number
+            v-model="configuration.configuration_input"
+            :min="1"
+            :max="10"
+          />
+        </div>
+        <div class="list">
           <span>启动延时：</span>
           <el-input
-            v-model="configuration.time"
-            style="width: 50px"
+            v-model="configuration.schedule_input"
+            style="width: 150px"
             placeholder=""
           />
           <span>&nbsp;秒</span>
         </div>
-      </div>
-      <div class="list">
-        <span>功能：</span>
-        <el-select
-          v-model="configuration.function_value"
-          style="width: 150px"
-          class="m-2"
-          placeholder=""
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+        <div class="list">
+          <el-checkbox
+            v-model="configuration.automatically_run_scripts"
+            label="自动运行脚本"
+            size="large"
           />
-        </el-select>
-      </div>
-      <div class="list">
-        <span>机型：</span>
-        <el-select
-          v-model="configuration.model_value"
-          class="m-2"
-          placeholder=""
-        >
-          <el-option
-            v-for="item in model"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+        </div>
+        <div class="list">
+          <el-checkbox
+            v-model="configuration.at_regular_time"
+            label="定时重置"
+            size="large"
           />
-        </el-select>
-      </div>
-      <div class="list">
-        <el-checkbox
-          v-model="configuration.agent"
-          label="跳过代理检测"
-          size="large"
-        />
-      </div>
-      <div class="list">
-        <el-checkbox
-          v-model="configuration.circulate"
-          label="开启循环跑号"
-          size="large"
-        />
-      </div>
-      <div class="list">
-        <el-checkbox
-          v-model="configuration.High_probability"
-          label="高命中率才抢"
-          size="large"
-        />
-      </div>
-      <div class="list">
-        <span>换号静默：</span>
-        <el-input
-          v-model="configuration.change_number"
-          style="width: 60px"
-          placeholder=""
-        />
-        <span>&nbsp;分钟</span>
-      </div>
-      <div class="list">
-        <span>掘金时间：</span>
-        <el-input
-          v-model="configuration.tunnelling"
-          style="width: 60px"
-          placeholder=""
-        />
-        <span>&nbsp;小时</span>
-      </div>
-      <div class="list">
-        <span>养号时间：</span>
-        <el-input
-          v-model="configuration.nursing_account"
-          style="width: 60px"
-          placeholder=""
-        />
-        <span>&nbsp;小时</span>
-      </div>
-      <div class="list">
-        <span>连续不中：</span>
-        <el-input
-          v-model="configuration.inadequate"
-          style="width: 60px"
-          placeholder=""
-        />
-        <span>&nbsp;次换号</span>
-      </div>
-      <div class="list">
-        <span>抢中次数：</span>
-        <el-input
-          v-model="configuration.success_quate"
-          style="width: 60px"
-          placeholder=""
-        />
-        <span>&nbsp;次下线</span>
-      </div>
-      <div class="list">
-        <span>服务器IP：</span>
-        <el-input
-          v-model="configuration.ip_input"
-          style="width: 150px"
-          placeholder=""
-        />
-      </div>
-      <div class="list">
-        <el-button style="width: 220px">更新图片资源</el-button>
-      </div>
-      <div class="list">
-        <el-button style="width: 220px">重置全部</el-button>
-      </div>
-      <el-divider> 脚本控制 </el-divider>
-      <div class="list">
-        <el-button style="width: 220px">停止脚本</el-button>
-      </div>
-      <div class="list">
-        <el-button style="width: 220px">全部暂停</el-button>
-      </div>
-      <el-divider> 保存配置 </el-divider>
-      <div class="list">
-        <span>当前配置：</span>
-        <el-select v-model="configuration.configuration_value" class="m-2" placeholder="">
-          <el-option
-            v-for="item in configuration_option"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+          <div class="list_item_flex">
+            <span>启动延时：</span>
+            <el-input
+              v-model="configuration.time"
+              style="width: 50px"
+              placeholder=""
+            />
+            <span>&nbsp;秒</span>
+          </div>
+        </div>
+        <div class="list">
+          <span>功能：</span>
+          <el-select
+            v-model="configuration.function_value"
+            style="width: 150px"
+            class="m-2"
+            placeholder=""
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </div>
+        <div class="list">
+          <span>机型：</span>
+          <el-select
+            v-model="configuration.model_value"
+            class="m-2"
+            placeholder=""
+          >
+            <el-option
+              v-for="item in model"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </div>
+        <div class="list">
+          <el-checkbox
+            v-model="configuration.agent"
+            label="跳过代理检测"
+            size="large"
           />
-        </el-select>
-      </div>
-      <div class="list" style="margin-top: 10px !important">
-        <el-button style="width: 220px">保存配置</el-button>
+        </div>
+        <div class="list">
+          <el-checkbox
+            v-model="configuration.circulate"
+            label="开启循环跑号"
+            size="large"
+          />
+        </div>
+        <div class="list">
+          <el-checkbox
+            v-model="configuration.High_probability"
+            label="高命中率才抢"
+            size="large"
+          />
+        </div>
+        <div class="list">
+          <span>换号静默：</span>
+          <el-input
+            v-model="configuration.change_number"
+            style="width: 60px"
+            placeholder=""
+          />
+          <span>&nbsp;分钟</span>
+        </div>
+        <div class="list">
+          <span>掘金时间：</span>
+          <el-input
+            v-model="configuration.tunnelling"
+            style="width: 60px"
+            placeholder=""
+          />
+          <span>&nbsp;小时</span>
+        </div>
+        <div class="list">
+          <span>养号时间：</span>
+          <el-input
+            v-model="configuration.nursing_account"
+            style="width: 60px"
+            placeholder=""
+          />
+          <span>&nbsp;小时</span>
+        </div>
+        <div class="list">
+          <span>连续不中：</span>
+          <el-input
+            v-model="configuration.inadequate"
+            style="width: 60px"
+            placeholder=""
+          />
+          <span>&nbsp;次换号</span>
+        </div>
+        <div class="list">
+          <span>抢中次数：</span>
+          <el-input
+            v-model="configuration.success_quate"
+            style="width: 60px"
+            placeholder=""
+          />
+          <span>&nbsp;次下线</span>
+        </div>
+        <div class="list">
+          <span>服务器IP：</span>
+          <el-input
+            v-model="configuration.ip_input"
+            style="width: 150px"
+            placeholder=""
+          />
+        </div>
+        <div class="list">
+          <el-button style="width: 220px" type="primary"
+            >更新图片资源</el-button
+          >
+        </div>
+        <div class="list">
+          <el-button style="width: 220px" type="danger">重置全部</el-button>
+        </div>
+        <el-divider> 脚本控制 </el-divider>
+        <div class="list">
+          <el-button style="width: 220px" type="danger">停止脚本</el-button>
+        </div>
+        <div class="list">
+          <el-button style="width: 220px" type="danger">全部暂停</el-button>
+        </div>
+        <el-divider> 保存配置 </el-divider>
+        <div class="list">
+          <span>当前配置：</span>
+          <el-select
+            v-model="configuration.configuration_value"
+            class="m-2"
+            placeholder=""
+          >
+            <el-option
+              v-for="item in configuration_option"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </div>
+        <div class="list" style="margin-top: 10px !important">
+          <el-button style="width: 220px" type="primary">保存配置</el-button>
+        </div>
       </div>
     </div>
+    <footer>
+      <div class="list">
+        <div class="item">
+          <span class="label">当前版本: </span><span>202303212021</span>
+        </div>
+        <div class="item">
+          <span class="label">到期时间: </span><span>2026-07-05 13:19:04</span>
+        </div>
+        <div class="item">
+          <span class="label">卡密多开数量: </span><span>20</span>
+        </div>
+        <div class="item">
+          <span class="label">在线设备: </span><span>5</span>
+        </div>
+        <div class="item">
+          <span class="label">金币总数: </span><span>444</span>
+        </div>
+        <div class="item">
+          <span class="label">今日总收益: </span><span>{{ isWidth }}</span>
+        </div>
+        <div class="item">
+          <span class="label">脚本已运行: </span><span>12:21:12</span>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -496,35 +541,26 @@ export default {
 
     onMounted(() => {
       window.onresize = () => {
-        //  window.innerWidth;
-        // if (Number(window.innerWidth) > 1640) {
-        //   state.isWidth = true;
-        // } else {
-        //   state.isWidth = false;
-        // }
         return (() => {
           state.isWidth = window.innerWidth;
         })();
       };
-      // window.addEventListener("resize", handleResize());
     });
     // 监听state.counter的变化
     watch(
       () => state.isWidth,
       (newValue) => {
-        // console.log(newValue, oldValue);
-        if (newValue > 1640) {
-          state.maxWidth = true;
+        if (newValue > 1661) {
+          if (state.maxWidth == false) {
+            state.maxWidth = true;
+          }
         } else {
-          state.maxWidth = false;
+          if (state.maxWidth) {
+            state.maxWidth = false;
+          }
         }
-        // 在这里可以执行你的其他操作
       }
     );
-    // const toggleSelection = () => {
-    //   state.multipleSelection = [];
-    //   console.log(state.multipleSelection);
-    // };
     const handleSelectionChange = (val) => {
       state.multipleSelection = val;
     };
@@ -569,32 +605,70 @@ export default {
     };
     return {
       ...toRefs(state),
-      // toggleSelection,
       handleSelectionChange,
       getSummaries,
       // 其他返回的数据...
     };
   },
-
-  // methods: {
-  //   toggleSelection() {
-  //     this.multipleSelection = [];
-  //     console.log(this.multipleSelection);
-  //   },
-  //   handleSelectionChange(val) {
-  //     this.multipleSelection = val;
-  //     console.log(this.multipleSelection);
-  //   },
-  // },
 };
 </script>
 <style scoped>
 .container {
-  height: 740px;
+  min-height: 740px;
+  height: 100%;
+  min-width: 1660px;
   width: 100%;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.background_pictur {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+}
+.background_pictur img{
+    width: 120%;
+    height: 120%;
+    position: absolute;
+    left: -100px;
+    top: -100px;
+}
+footer {
+  height: 40px;
+  min-height: 40px;
+  z-index: 1;
+  background: #fff;
+  opacity: 0.9;
+}
+footer .list {
+  display: flex;
+  width: 100%;
+  min-width: 1660px;
+  height: 100%;
+  justify-content: space-between;
+}
+footer .list .item {
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 12px;
+  font-weight: 700;
+}
+footer .list .item .label {
+  margin-right: 5px;
+}
+.flex_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 1;
+  background: #fff;
+  opacity: 0.9;
 }
 .el-table {
   height: 100%;
@@ -626,19 +700,23 @@ export default {
   height: 20px !important;
 }
 .left {
-  width: 1295px;
+  width: 100%;
   height: 720px;
+  opacity: 0.9;
 }
 .right {
   min-width: 300px;
   width: 300px;
   height: 720px;
   max-height: 100%;
-  background-color: #f0f0f0;
+  background-color: #fff;
   margin-left: 20px;
   border: solid 1px #e2e2e2;
+  border-bottom: none;
+  border-top: none;
+  opacity: 0.9;
 }
-@media screen and (min-width: 1641px) {
+@media screen and (min-width: 1661px) {
   .left {
     min-width: 1295px;
     min-height: 720px;
