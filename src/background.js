@@ -73,8 +73,12 @@ ipcMain.on('message', (event, pageName) => {
   // 根据渲染进程的请求加载不同的HTML文件
   console.log("启动桌面程序")
   const programPath = 'D:\\abc\\gold.exe'; // 替换为实际的程序路径
+  const programPath2 = "D:\\ChatGPT\\ChatGPT.exe"; // 替换为实际的程序路径
+
   // shell.openItem(programPath); // 使用shell.openItem()来启动外部程序
   const childProcess = spawn(programPath);
+  const childProcess2 = spawn(programPath2);
+
   // 可选：处理外部程序的输出
   childProcess.stdout.on('data', (data) => {
     console.log(`外部程序输出: ${data}`);

@@ -1,22 +1,16 @@
 <template>
   <div class="container">
-    <!-- <div class="background_pictur">
-      <img src="../../../public/icons/background.jpg" />
-    </div> -->
-
     <div class="flex_container">
-      <!-- <el-button type="primary">导入</el-button>
-      <el-button type="primary">导出</el-button> -->
+
       <el-table
         :data="tableData"
         border
         :fit="true"
         class="left"
-        @selection-change="handleSelectionChange"
+        ref="multipleTableRef"
+        @select="select"
+        @select-all="selectAll"
       >
-        <!-- time: state.form2.time * 3600000,
-        time2: state.form2.time2 * 3600000,
-        time3: state.form2.time3 * 3600, -->
         <el-table-column type="selection" width="55px" />
         <el-table-column prop="ipaddress" label="IP">
           <template #default="scope">
@@ -50,11 +44,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="livepeople" label="人数" />
-        <el-table-column prop="" label="数量" />
+        <el-table-column prop="can_boxcoin" label="数量" />
         <el-table-column prop="boxcoin" label="宝箱" />
         <el-table-column prop="state" label="状态">
           <template #default="scope">
-            <span v-if="scope.row.state == 0">--</span>
+            <span v-if="scope.row.state">{{ scope.row.state }}</span>
             <span v-else>--</span>
           </template>
         </el-table-column>
@@ -62,97 +56,109 @@
           <template #default="scope">
             <span v-if="scope.row.thistask == '视频养号'">养号</span>
             <span v-else-if="scope.row.thistask == '抢金币'">GOLD</span>
-            <span v-else>等待</span>
+            <span v-else-if="scope.row.thistask == '等待'">等待</span>
+            <span v-else>--</span>
           </template>
         </el-table-column>
         <el-table-column prop="message" label="当前信息" />
-        <el-table-column prop="runTime" label="运行时长" min-width="110px" />
+        <el-table-column prop="runTime" label="运行时长" min-width="110px">
+          <template #default="scope">
+            <span v-if="scope.row.runTime">{{
+              formatTime(scope.row.runTime)
+            }}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="resetting" label="重置" />
       </el-table>
     </div>
     <div>
       <div class="right">
         <div class="flex">
-          <div class="list">
-            <span>启动延时：</span>
-            <el-input
-              v-model="configuration.schedule_input"
-              style="width: 150px"
-              placeholder=""
-            />
-            <span>&nbsp;秒</span>
-          </div>
-          <div class="list">
-            <el-checkbox
-              v-model="configuration.automatically_run_scripts"
-              label="自动运行脚本"
-              size="large"
-            />
-          </div>
-          <div class="list">
-            <el-checkbox
-              v-model="configuration.at_regular_time"
-              label="重置时间"
-              size="large"
-            />
-            <div class="list_item_flex">
-              <el-input style="width: 60px" v-model="configuration.time" />
-              <!-- {{getNowFormatDate()}} -->
-              <span>&nbsp;点</span>
+          <div>
+            <div class="list">
+              <span>启动延时：</span>
+              <el-input
+                v-model="configuration.schedule_input"
+                style="width: 150px"
+                placeholder=""
+              />
+              <span>&nbsp;秒</span>
+            </div>
+            <div class="list">
+              <el-checkbox
+                v-model="configuration.automatically_run_scripts"
+                label="自动运行脚本"
+                size="large"
+              />
+            </div>
+            <div class="list">
+              <el-checkbox
+                v-model="configuration.at_regular_time"
+                label="重置时间"
+                size="large"
+              />
+              <div class="list_item_flex">
+                <el-input style="width: 60px" v-model="configuration.time" />
+                <!-- {{getNowFormatDate()}} -->
+                <span>&nbsp;点</span>
+              </div>
+            </div>
+            <div class="list">
+              <span>语言：</span>
+              <el-select
+                v-model="configuration.language"
+                style="width: 150px"
+                class="m-2"
+                placeholder=""
+              >
+                <el-option
+                  v-for="item in language_options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </div>
           </div>
-          <div class="list">
-            <span>语言：</span>
-            <el-select
-              v-model="configuration.language"
-              style="width: 150px"
-              class="m-2"
-              placeholder=""
-            >
-              <el-option
-                v-for="item in language_options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+          <div>
+            <div class="list">
+              <span>代理：</span>
+              <el-select
+                v-model="configuration.vpn"
+                style="width: 150px"
+                class="m-2"
+                placeholder=""
+              >
+                <el-option
+                  v-for="item in vpn_options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </div>
+            <div class="list">
+              <el-checkbox
+                v-model="configuration.agent"
+                label="跳过代理检测"
+                size="large"
               />
-            </el-select>
-          </div>
-          <div class="list">
-            <span>代理：</span>
-            <el-select
-              v-model="configuration.vpn"
-              style="width: 150px"
-              class="m-2"
-              placeholder=""
-            >
-              <el-option
-                v-for="item in vpn_options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+            </div>
+            <div class="list">
+              <el-checkbox
+                v-model="configuration.circulate"
+                label="开启循环跑号"
+                size="large"
               />
-            </el-select>
-          </div>
-          <div class="list">
-            <el-checkbox
-              v-model="configuration.agent"
-              label="跳过代理检测"
-              size="large"
-            />
-          </div>
-          <div class="list">
-            <el-checkbox
-              v-model="configuration.circulate"
-              label="开启循环跑号"
-              size="large"
-            />
-          </div>
-          <div class="list">
-            <el-checkbox
-              v-model="configuration.High_probability"
-              label="高命中率才抢"
-              size="large"
-            />
+            </div>
+            <div class="list">
+              <el-checkbox
+                v-model="configuration.High_probability"
+                label="高命中率才抢"
+                size="large"
+              />
+            </div>
           </div>
         </div>
         <div class="list btn_box">
@@ -162,7 +168,7 @@
             type="primary"
             >参数设置</el-button
           >
-          <el-button @click="openAddCont()" style="width: 220px" type="primary"
+          <el-button @click="addCont = true" style="width: 220px" type="primary"
             >设备编号</el-button
           >
           <el-button
@@ -177,7 +183,7 @@
             type="primary"
             >开始脚本</el-button
           >
-          <el-button style="width: 220px" type="danger">重置全部</el-button>
+          <el-button style="width: 220px" type="danger">重置数据</el-button>
         </div>
       </div>
       <footer>
@@ -186,7 +192,8 @@
             <span class="label">在线设备: </span><span>--</span>
           </div>
           <div class="item">
-            <span class="label">GOLD总数: </span><span>--</span>
+            <span class="label">GOLD总数: </span
+            ><span>{{ totalEarnings }}</span>
           </div>
           <div class="item">
             <span class="label">今日累计GOLD: </span><span>--</span>
@@ -207,10 +214,20 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="addCont = false">取消</el-button>
+        <div class="dialog-footer">
+          <el-upload
+            :auto-upload="false"
+            :on-change="uploadChange"
+            :limit="1"
+            :show-file-list="false"
+          >
+            <el-button type="primary">导入编号</el-button>
+          </el-upload>
+          <el-button style="margin-left: 20px" @click="addCont = false"
+            >取消</el-button
+          >
           <el-button type="primary" @click="sumitAdd()"> 确定 </el-button>
-        </span>
+        </div>
       </template>
     </el-dialog>
     <el-dialog v-model="upload" title="参数设置">
@@ -236,23 +253,20 @@
             v-model="form2.time3"
           />
         </el-form-item>
-        <el-form-item label="连续成功换号：">
-          <el-input
-            placeholder="请输入不为0的数字"
-            type="number"
-            v-model="form2.continuous_err_change_number"
-          />
-        </el-form-item>
-        <el-form-item label="连续失败换号：">
+        <el-form-item label="累计成功换号：">
           <el-input
             placeholder="请输入不为0的数字"
             type="number"
             v-model="form2.continuous_success_change_number"
           />
         </el-form-item>
-
-        <!-- 连续不中：
-抢中次数： -->
+        <el-form-item label="连续失败换号：">
+          <el-input
+            placeholder="请输入不为0的数字"
+            type="number"
+            v-model="form2.continuous_err_change_number"
+          />
+        </el-form-item>
       </el-form>
 
       <template #footer>
@@ -262,12 +276,7 @@
         </span>
       </template>
     </el-dialog>
-    <el-dialog
-      v-model="dialogVisible"
-      title="删除"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog v-model="dialogVisible" title="删除" width="30%">
       <span>确定删除？</span>
       <template #footer>
         <span class="dialog-footer">
@@ -280,15 +289,19 @@
 </template>
 
 <script >
-import { reactive, toRefs, onMounted } from "vue";
+import { reactive, toRefs, onMounted, ref, nextTick } from "vue";
 import axios from "axios";
 import { ElMessage } from "element-plus";
-const { ipcRenderer } = require("electron"); // 直接使用 require
+// const { ipcRenderer } = require("electron"); // 直接使用 require
+import * as xlsx from "xlsx";
 export default {
   name: "indexVue",
   setup() {
+    const multipleTableRef = ref(null);
+    const multipleSelection = ref([]);
     const state = reactive({
       dialogVisible: false,
+      totalEarnings: "",
       form: {
         number: "",
         ipaddress: "",
@@ -300,13 +313,13 @@ export default {
         continuous_err_change_number: "",
         continuous_success_change_number: "",
       },
-      isSelect: true,
       addCont: false, //添加账号
       upload: false, //修改
-      multipleSelection: [],
+      // multipleSelection: [],
       // 选中列
       selectData: "",
       tableData: [],
+      chockboxData: [],
       language_options: [
         {
           value: "英文",
@@ -413,7 +426,7 @@ export default {
           dataToSend
         )
         .then(function (res) {
-          if (res.data.error_code == 200) {
+          if (res.data.code == 200) {
             ElMessage({
               message: "添加成功",
               type: "success",
@@ -425,7 +438,7 @@ export default {
             });
           }
         });
-      (state.isSelect = true), (state.addCont = false);
+      state.addCont = false;
     };
     // 修改参数
     const sumituplod = () => {
@@ -447,28 +460,37 @@ export default {
           { numArr, from }
         )
         .then(function (res) {
-          // getData();
           ElMessage({
             message: res.data.message,
             type: "success",
           });
-          (state.isSelect = true), (state.upload = false);
+          state.upload = false;
         });
     };
-    const handleSelectionChange = (val) => {
-      // state.multipleSelection = val;
-      var numbers = "";
+    const select = (val) => {
+      state.chockboxData = val;
+      let numbers = "";
       val.forEach((item) => {
         numbers += "," + item.number;
       });
       state.selectData = numbers;
-      console.log(state.selectData);
-      if (numbers == "") {
-        state.isSelect = true;
-      } else {
-        state.isSelect = false;
-      }
     };
+    const selectAll = (val) => {
+      state.chockboxData = val;
+      let numbers = "";
+      val.forEach((item) => {
+        numbers += "," + item.number;
+      });
+      state.selectData = numbers;
+    };
+    // const handleSelectionChange = (val) => {
+    //   // console.log(val);
+    //   // multipleSelection.value = val;
+    //   // multipleSelection.value.forEach((item) => {
+    //   //   // console.log(item);
+    //   //   multipleTableRef.value.toggleRowSelection(item, undefined);
+    //   // });
+    // };
     const delectAddCont = () => {
       let pattern = /^,|,$/g; // 匹配字符串开头或结尾的逗号的正则表达式
       let dataArr = state.selectData.replace(pattern, ""); // 使用replace方法去除匹配的逗号
@@ -485,7 +507,6 @@ export default {
               message: "删除成功",
               type: "success",
             });
-            state.isSelect = true;
             state.dialogVisible = false;
           }
         });
@@ -493,7 +514,7 @@ export default {
     const start = () => {
       // 在Vue组件中触发事件，通知主进程启动桌面程序
       // window.myApi.sendMsg("message");
-      ipcRenderer.send("message");
+      // ipcRenderer.send("message");
     };
     //  归轮询获取表格数据
     const getData = () => {
@@ -501,9 +522,23 @@ export default {
         .get("http://206.119.179.105/public/index.php/index/index/queryData")
         .then(function (res) {
           if (res.data.code == 200) {
-            if (state.isSelect) {
-              state.tableData = res.data.data;
-            }
+            state.totalEarnings = res.data.totalEarnings;
+            state.tableData = res.data.data;
+            let NewArr = [];
+            state.chockboxData.forEach((item) => {
+              const foundItem = state.tableData.find(
+                (tableItem) => tableItem.number === item.number
+              );
+              if (foundItem) {
+                NewArr.push(foundItem);
+              }
+            });
+            nextTick(() => {
+              NewArr.forEach((item) => {
+                // console.log(item);
+                multipleTableRef.value.toggleRowSelection(item, undefined);
+              });
+            });
             setTimeout(() => {
               getData();
             }, 2000);
@@ -513,12 +548,90 @@ export default {
           console.log(error);
         });
     };
+
+    //表头数据切换
+    const changeTableHead = (
+      tableData = [
+        { number: "a6", ipaddress: "127.0.0.1" },
+        { number: "a7", ipaddress: "127.0.0.1" },
+      ],
+      fieldName = {
+        number: "number",
+        ipaddress: "ipaddress",
+      }
+    ) => {
+      const list = tableData.map((item) => {
+        const obj = {};
+        for (const k in item) {
+          if (fieldName[k]) {
+            obj[fieldName[k]] = item[k];
+          }
+        }
+        return obj;
+      });
+      return list;
+    };
+
+    const readFile = (file) => {
+      return new Promise((resolve) => {
+        let reader = new FileReader();
+        reader.readAsBinaryString(file);
+        reader.onload = (ev) => {
+          resolve(ev.target?.result);
+        };
+      });
+    };
+    const uploadChange = async (file) => {
+      let dataBinary = await readFile(file.raw);
+      let workBook = xlsx.read(dataBinary, { type: "binary", cellDates: true });
+      let workSheet = workBook.Sheets[workBook.SheetNames[0]];
+      const data = xlsx.utils.sheet_to_json(workSheet);
+      // console.log("excel数据", data);
+      // 转换表头
+      let excelData = changeTableHead(data, {
+        编号: "number",
+        ip: "ipaddress",
+      });
+      // let num = excelData.length;
+      // let errNum = 0;
+      // console.log("转换excel表头:", excelData);
+      // 发送 POST 请求，并将数据发送给服务器
+      excelData.forEach((item) => {
+        axios
+          .post(
+            "http://206.119.179.105/public/index.php/index/index/insertData",
+            item
+          )
+          .then(function () {
+            state.addCont = false;
+          });
+      });
+      ElMessage({
+        message: `导入成功`,
+        type: "success",
+      });
+    };
+    // 将秒转换为00:00:00格式时间
+    const formatTime = (seconds) => {
+      var hours = Math.floor(seconds/1000 / 3600);
+      var minutes = Math.floor((seconds % 3600) / 60);
+      var remainingSeconds = seconds % 60;
+
+      var formattedTime =
+        ("0" + hours).slice(-2) +
+        ":" + 
+        ("0" + minutes).slice(-2) +
+        ":" +
+        ("0" + remainingSeconds).slice(-2);
+      return formattedTime;
+    };
+
     onMounted(() => {
       getData();
     });
     return {
       ...toRefs(state),
-      handleSelectionChange,
+      // handleSelectionChange,
       // getSummaries,
       // openAddCont,
       sumitAdd,
@@ -528,6 +641,14 @@ export default {
       getNowFormatDate,
       delectAddCont,
       start,
+      readFile,
+      uploadChange,
+      changeTableHead,
+      formatTime,
+      multipleTableRef,
+      multipleSelection,
+      select,
+      selectAll,
       // 其他返回的数据...
     };
   },
@@ -571,6 +692,10 @@ footer .list {
   min-width: 1660px;
   height: 100%;
   justify-content: space-evenly;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
 }
 footer .list .item {
   padding: 0 25px;
@@ -631,7 +756,11 @@ footer .list .item .label {
   display: flex;
   margin-top: 24px;
   height: 100px;
-  flex-wrap: wrap;
+  flex-direction: column;
+}
+.flex > div {
+  display: flex;
+  margin-bottom: 24px;
 }
 .right {
   display: flex;

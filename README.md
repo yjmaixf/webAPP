@@ -2,7 +2,7 @@
 
 ## Project setup
 ```
-npm install
+npm install --force --registry=https://registry.npm.taobao.org
 ```
 
 ### Compiles and hot-reloads for development
