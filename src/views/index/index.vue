@@ -694,7 +694,7 @@ export default {
       // uniqueId=16950243814170.gghy8v1hi8r ${state.uniqueId}
       axios
         .get(
-          `http://206.119.179.105/public/index.php/index/index/queryData?uniqueId=16950243814170.gghy8v1hi8r`
+          `http://206.119.179.105/public/index.php/index/index/queryData?uniqueId=${state.uniqueId}`
         )
         .then(function (res) {
           if (res.data.code == 200) {
