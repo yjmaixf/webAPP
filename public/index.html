@@ -1,17 +1,66 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>中控台</title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>中控台</title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+
+  <style>
+    .el-table__body tr.current-row>td.el-table__cell {
+      background-color: #409eff;
+      color: #fff;
+    }
+
+    .el-table--enable-row-transition .el-table__body td.el-table__cell:hover {
+      background-color: #409eff;
+    }
+
+    .el-table--enable-row-transition .el-table__body td.el-table__cell {
+      transition: background-color 0s ease;
+    }
+
+    .el-table__row:hover {
+      background-color: #409eff;
+    }
+
+    .el-table tr:hover {
+      background-color: #409eff !important;
+      /* color: #fff; */
+    }
+
+    .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
+      background-color: #409eff !important;
+
+    }
+
+    .el-table .cell {
+      text-align: center;
+      font-size: 13px !important;
+    }
+
+    .el-table tr {
+      color: #000000;
+      font-weight: 500;
+      text-align: center;
+      height: 25px;
+    }
+
+    .el-table__header-wrapper .cell {
+      font-size: 14px !important;
+    }
+  </style>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>
