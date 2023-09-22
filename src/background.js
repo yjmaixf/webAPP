@@ -9,7 +9,6 @@ const path = require('path');
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 path.join(__static, 'icons/icon.ico')
-console.log("a", path.join(__static, 'icons/icon.ico'))
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -64,10 +63,11 @@ function createWindow() {
     } 
   } else {
     createProtocol('app')
-    // win.loadURL('app://./index.html')
+    // 生产环境
+    win.loadURL('app://./index.html')
   }
 
-  // 监听窗口关闭事件
+  // 监听窗口关闭事件 
   win.on('closed', () => {
     win = null;
   });

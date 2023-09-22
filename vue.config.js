@@ -5,13 +5,10 @@ module.exports = defineConfig({
     electronBuilder: {
       nodeIntegration: true,
       builderOptions: {
+        productName: '中控台',
         win: {
           icon: 'public/icons/icon.ico',
         },
-        mac: {
-          icon: './public/app.png'
-        },
-        productName: '中控台'
       },
       chainWebpackMainProcess: (config) => {
         config.output.filename((file) => {

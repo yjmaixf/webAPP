@@ -425,7 +425,6 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 const { ipcRenderer } = require("electron"); // 直接使用 require  ,
 import * as xlsx from "xlsx";
-const { app } = require("electron");
 // const fs = require("fs");
 // const path = require("path");
 export default {
@@ -437,7 +436,6 @@ export default {
 
     // 获取用户数据目录路径
     // const userDataPath = app.getPath("userData");
-    console.log(app);
     const state = reactive({
       uniqueId: "", //电脑设备唯一id
       resetting_time: false,
